@@ -10,7 +10,8 @@ public class Enemy : MonoBehaviour
     public GameObject player;
     public float viewDistance;
     public float viewAngle;
-    public float rotationSpeed; 
+    public float rotationSpeed;
+    public float moveSpeed;
 
    
     void Start()
@@ -35,7 +36,7 @@ public class Enemy : MonoBehaviour
         return false;
     }
 
-   
+
     void Update()
     {
         bool seen = SeePlayer();
@@ -44,10 +45,10 @@ public class Enemy : MonoBehaviour
             
             Vector3 direction = player.transform.position - transform.position;
             Quaternion targetRotation = Quaternion.LookRotation(Vector3.forward, direction);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 
             
-            transform.position += transform.up * 6f * Time.deltaTime;
+            transform.position = Vector3.MoveTowards(transform.position, player.transform.position, moveSpeed * Time.deltaTime);
         }
         else
         {
